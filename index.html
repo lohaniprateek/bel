@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BEL Kotdwar Exam Tracker</title>
+<style>
+:root{--bg:#15181c;--pn:#1c2025;--p2:#232831;--ln:#2d333b;--tx:#d8dce1;--mu:#8a939e;--ac:#d9a441;--rd:#e07a6e}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font:14px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+button,select,input,textarea{font:inherit;color:inherit}
+button{background:var(--p2);border:1px solid var(--ln);border-radius:6px;padding:7px 12px;cursor:pointer;min-height:36px;transition:background .15s,border-color .15s}
+button:hover{border-color:var(--mu)}
+button.pri{background:var(--ac);color:#1a1405;border-color:var(--ac);font-weight:600}
+button.dg{border-color:var(--rd);color:var(--rd)}
+button:disabled{opacity:.4;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+select,input,textarea{background:var(--bg);border:1px solid var(--ln);border-radius:6px;padding:7px 9px;min-height:36px;max-width:100%}
+textarea{width:100%;min-height:70px;resize:vertical}
+#app{display:flex;min-height:100vh}
+#side{width:212px;flex:none;border-right:1px solid var(--ln);padding:20px 12px;position:sticky;top:0;height:100vh}
+.brand{padding:0 8px 18px;font-weight:600;font-size:15px}.brand small{display:block;color:var(--mu);font-weight:400;font-size:12px}
+.nv{display:flex;align-items:center;gap:10px;width:100%;background:none;border:0;border-radius:6px;padding:9px 10px;color:var(--mu);text-align:left}
+.nv svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.nv:hover{color:var(--tx)}.nv.on{background:var(--p2);color:var(--ac)}
+#wrap{flex:1;min-width:0}
+#top{display:flex;gap:12px;align-items:center;padding:12px 24px;border-bottom:1px solid var(--ln);position:sticky;top:0;background:var(--bg);z-index:5}
+#q{flex:1;min-width:0;max-width:460px}
+.cd{margin-left:auto;text-align:right;white-space:nowrap;font-size:12px;color:var(--mu)}.cd b{display:block;color:var(--tx);font-size:15px}
+main{padding:22px 24px 40px;max-width:1180px}
+h1{font-size:21px;margin:0 0 4px;font-weight:600}h3{margin:0 0 8px}
+.mu{color:var(--mu)}.sm{font-size:12px}
+.hd{margin-bottom:16px}.hd p{margin:0;color:var(--mu);max-width:70ch}
+.pn{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:14px}
+.grid3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.cardv{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:12px 14px}
+.cardv b{display:block;font-size:24px;font-weight:600;line-height:1.2}.cardv span{color:var(--mu);font-size:12px}
+.rc{display:flex;align-items:center;gap:14px}.rc div{font-size:12px;color:var(--mu)}.rc strong{display:block;color:var(--tx);font-size:14px}
+.ring{width:84px;height:84px;flex:none}.ring circle{fill:none;stroke-width:4}.rb{stroke:var(--ln)}.rf{stroke:var(--ac);stroke-linecap:round;transition:stroke-dasharray .4s}
+.ring text{fill:var(--tx);font-size:9px;font-weight:600}
+.bar{height:6px;background:var(--ln);border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ac);transition:width .3s}
+.seg{display:inline-flex;border:1px solid var(--ln);border-radius:7px;overflow:hidden}
+.seg button{border:0;border-radius:0;background:none;color:var(--mu);padding:6px 11px}
+.seg button.on{background:var(--ac);color:#1a1405;font-weight:600}
+.bar2{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.chart{display:flex;align-items:flex-end;gap:3px;height:120px;border-bottom:1px solid var(--ln);padding-top:6px}
+.col{flex:1;display:flex;align-items:flex-end;gap:1px;height:100%;min-width:0}.col i{flex:1;background:var(--ac);min-height:0;border-radius:2px 2px 0 0}.col i+i{background:#6f7b8a}
+.col.td{background:rgba(217,164,65,.1)}
+.lg{display:flex;gap:16px;font-size:12px;color:var(--mu);margin-top:6px;flex-wrap:wrap}.lg s{display:inline-block;width:10px;height:10px;background:var(--ac);margin-right:5px;text-decoration:none}.lg s+s{background:#6f7b8a}
+.sr{display:grid;grid-template-columns:44px 1fr 90px 44px;gap:10px;align-items:center;padding:4px 0;font-size:13px}
+.sr span:first-child{color:var(--mu)}.sr .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gh{width:100%;text-align:left;background:none;border:0;padding:12px 14px;display:block;border-radius:10px}
+.gc{background:var(--pn);border:1px solid var(--ln);border-radius:10px;margin-bottom:10px}
+.gt{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.gt b{font-size:15px}
+.chip{font-size:12px;color:var(--mu);border:1px solid var(--ln);border-radius:10px;padding:0 8px}
+.gb{padding:0 14px 8px;border-top:1px solid var(--ln)}
+.cat{margin:20px 0 8px;color:var(--mu);font-weight:600}
+.tp{padding:9px 0;border-bottom:1px solid var(--ln);display:grid;grid-template-columns:1fr auto auto;gap:6px 10px;align-items:center}
+.tp:last-child{border:0}.tm{min-width:0;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.id{color:var(--mu);font-size:12px;font-variant-numeric:tabular-nums}
+.tag{font-size:11px;border:1px solid var(--ac);color:var(--ac);border-radius:10px;padding:0 7px}.tag.r{border-color:var(--rd);color:var(--rd)}.tag.g{border-color:var(--mu);color:var(--mu)}
+.s1 .nm{color:var(--ac)}
+.dt{grid-column:1/-1;background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:12px;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.dt label{display:block;font-size:12px;color:var(--mu)}
+.st{display:flex;gap:4px}.st button{padding:2px 9px;min-height:30px}.st button.on{background:var(--ac);color:#1a1405;border-color:var(--ac)}
+.sch{display:flex;gap:6px;flex-wrap:wrap}
+.tk{background:var(--pn);border:1px solid var(--ln);border-left:3px solid var(--ln);border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.tk.over{border-left-color:var(--rd)}.tk.today{border-left-color:var(--ac)}
+.tkh{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}
+.kv{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:12px;color:var(--mu);margin-bottom:10px}.kv b{color:var(--tx);font-weight:500}
+.bt{display:flex;gap:8px;flex-wrap:wrap}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}.tabs button.on{border-color:var(--ac);color:var(--ac)}
+.empty{color:var(--mu);padding:22px;text-align:center;border:1px dashed var(--ln);border-radius:10px}
+#mod{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:20;padding:16px}
+#mod[hidden]{display:none}
+.box{background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:20px;width:100%;max-width:440px;max-height:90vh;overflow:auto}
+.box label{display:block;margin:10px 0}.box input[type=number],.box input[type=date]{display:block;width:100%;margin-top:4px}
+.nt{background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:10px;margin:8px 0;white-space:pre-wrap}
+#toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);background:var(--p2);border:1px solid var(--ln);padding:9px 16px;border-radius:8px;z-index:30;display:none;max-width:90vw}
+#bnav{display:none}
+@media(max-width:860px){
+#side{display:none}
+#top{padding:10px 14px}main{padding:16px 14px 90px}
+#bnav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;bottom:0;left:0;right:0;background:var(--pn);border-top:1px solid var(--ln);z-index:6;padding-bottom:env(safe-area-inset-bottom)}
+#bnav .nv{flex-direction:column;gap:2px;font-size:11px;padding:8px 2px;justify-content:center;text-align:center;border-radius:0}
+.tp{grid-template-columns:1fr}.sr{grid-template-columns:40px 1fr 60px}.sr span:last-child{display:none}
+.cd b{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"><aside id="side"></aside><div id="wrap"><header id="top"><input id="q" type="search" placeholder="Search topics by name or ID (e.g. T09 or semaphores)" aria-label="Search topics"><div class="cd" id="cd"></div></header><main id="main"></main></div></div>
+<nav id="bnav"></nav><div id="mod" hidden></div><div id="toast"></div><input type="file" id="file" accept=".json,application/json" hidden>
+<script>
+"use strict";
+const EXAM='2026-12-13',FINAL='2026-12-12',START='2026-11-15',OFFS=[1,3,7,14,21],KEY='bel_kotdwar_tracker_v1';
+const RAW=`T01~C Programming~Data types and variables;Constants and identifiers;Operators and operator precedence;Type conversion and type casting;Conditional statements;Loops;Functions;Function arguments and return values;Recursion;Scope and lifetime of variables
+T02~Advanced C Programming~Pointers and pointer arithmetic;Pointers and arrays;Pointers and strings;Pointer to pointer;Function pointers;Dynamic memory allocation: malloc, calloc, realloc, free;Structures;Unions;Enumerations;Storage classes;Preprocessor directives and macros;Header files;File handling;Undefined and implementation-defined behavior
+T03~C++ Programming and OOP~Classes and objects;Access specifiers;Constructors and destructors;Copy constructors;this pointer;Inheritance;Types of inheritance;Function overloading;Operator overloading;Function overriding;Compile-time polymorphism;Runtime polymorphism;Virtual functions;Pure virtual functions;Abstract classes;Encapsulation;Abstraction;Templates;Exception handling;References and pointers
+T04~Data Structures~Arrays;Strings;Singly linked lists;Doubly linked lists;Circular linked lists;Stacks;Stack applications;Queues;Circular queues;Deques;Trees;Binary trees;Binary search trees;Tree traversals;AVL trees;Heaps;Priority queues;Hash tables;Graph representations;Adjacency matrix;Adjacency list
+T05~Algorithms~Algorithm analysis;Time complexity;Space complexity;Big O, Omega and Theta;Best, average and worst cases;Linear search;Binary search;Bubble sort;Selection sort;Insertion sort;Merge sort;Quick sort;Heap sort;Recursion and recurrence relations;Divide and conquer;Greedy algorithms;Dynamic programming;Breadth-first search;Depth-first search;Dijkstra's shortest path;Minimum spanning trees;Prim's algorithm;Kruskal's algorithm
+T06~Discrete Mathematics~Propositional logic;Predicate logic;Truth tables;Logical equivalence;Sets and set operations;Relations;Equivalence relations;Functions;Mathematical induction;Counting principles;Permutations;Combinations;Graph theory;Trees and graph properties;Recurrence relations;Boolean algebra
+T07~Digital Logic~Number systems;Binary, decimal, octal and hexadecimal conversions;Binary arithmetic;1's and 2's complement;Logic gates;Boolean algebra;De Morgan's laws;Karnaugh maps;SOP and POS forms;Combinational circuits;Adders and subtractors;Multiplexers;Demultiplexers;Encoders and decoders;Latches;SR, JK, D and T flip-flops;Registers;Counters
+T08~Computer Organization and Architecture~Computer organization fundamentals;CPU architecture;ALU;Registers;Instruction cycle;Instruction formats;Addressing modes;Instruction set architecture;RISC and CISC;Memory hierarchy;Cache memory;Direct mapping;Associative mapping;Set-associative mapping;Main memory;Secondary storage;Virtual memory fundamentals;Instruction pipelining;Pipeline hazards;Interrupts;I/O organization;DMA
+T09~Operating Systems~Operating system fundamentals;Kernel and system calls;Process management;Process states;Process control block;Threads;User-level and kernel-level threads;Context switching;CPU scheduling;FCFS;SJF and SRTF;Priority scheduling;Round Robin;Waiting time and turnaround time;Process synchronization;Critical section;Mutex;Semaphores;Deadlocks;Deadlock prevention, avoidance and detection;Banker's algorithm;Memory management;Paging;Segmentation;Virtual memory;Page tables;Page replacement algorithms;FIFO;LRU;Optimal replacement;Thrashing;File systems;Disk scheduling
+T10~Database Management Systems~Database fundamentals;DBMS architecture;Relational model;Relational algebra;Database schemas;Super keys and candidate keys;Primary keys;Foreign keys;Functional dependencies;Attribute closure;Normalization;1NF;2NF;3NF;BCNF;SQL fundamentals;DDL, DML, DCL and TCL;SELECT and WHERE;GROUP BY and HAVING;Aggregate functions;Joins;Nested queries;Subqueries;Views;Indexing;Transactions;ACID properties;Serializability;Concurrency control;Database recovery
+T11~Computer Networks~Network fundamentals;Network topologies;LAN, MAN and WAN;OSI model;TCP/IP model;Encapsulation;Ethernet;MAC addressing;IPv4;IPv6;Subnetting;CIDR;Public and private addressing;TCP;UDP;TCP three-way handshake;Flow control;Congestion control;Routing;Static and dynamic routing;RIP;OSPF;DNS;DHCP;HTTP;HTTPS;SMTP;FTP;SSH;Network devices;Switches;Routers;Firewalls
+T12~Theory of Computation~Formal languages;Alphabets and strings;Finite automata;DFA;NFA;DFA and NFA conversion;Regular expressions;Regular languages;Pumping lemma;Context-free grammars;Derivations;Parse trees;Pushdown automata;Context-free languages;Turing machines;Decidability;Undecidability
+T13~Compiler Design~Compiler architecture;Lexical analysis;Tokens and lexemes;Regular expressions in lexical analysis;Syntax analysis;Top-down parsing;Bottom-up parsing;LL and LR parsing fundamentals;Parse trees;Syntax-directed translation;Semantic analysis;Intermediate code generation;Three-address code;Code optimization;Code generation;Symbol tables;Runtime environments
+T14~Software Engineering~Software development life cycle;Waterfall model;Incremental model;Spiral model;Agile methodology;Scrum fundamentals;Software requirements;Functional and non-functional requirements;UML basics;Software architecture;Cohesion;Coupling;Black-box testing;White-box testing;Unit testing;Integration testing;System testing;Regression testing;Verification and validation;Software maintenance
+T15~Computer Security~Security fundamentals;CIA triad;Symmetric encryption;Asymmetric encryption;Hash functions;Digital signatures;Authentication;Authorization;Access control;Public key infrastructure;Common web vulnerabilities;Network security;Firewalls;Secure communication
+T16~Web and Distributed Systems~Client-server architecture;HTTP request and response;REST fundamentals;APIs;Distributed systems fundamentals;Replication;Consistency;Availability;Fault tolerance;Caching;Load balancing;CAP theorem;Distributed databases
+A01~Number System~Integers;Fractions;Divisibility;HCF and LCM;Factors and multiples
+A02~Simplification~BODMAS;Fractions and decimals;Approximation;Surds
+A03~Percentages~Percentage calculations;Percentage increase and decrease;Successive percentage changes
+A04~Ratio and Proportion~Ratios;Proportions;Direct proportion;Inverse proportion;Partnership
+A05~Average~Simple average;Weighted average
+A06~Profit and Loss~Cost price;Selling price;Profit and loss percentage;Discounts;Markup
+A07~Interest~Simple interest;Compound interest;Principal, rate and time
+A08~Time and Work~Individual efficiency;Combined work;Work and wages;Pipes and cisterns
+A09~Time, Speed and Distance~Relative speed;Trains;Boats and streams
+A10~Mixtures and Alligation~Mixtures;Replacement;Concentration
+A11~Problems on Ages~Present age;Past and future age;Age ratios
+A12~Algebra~Linear equations;Quadratic equations;Algebraic identities
+A13~Permutations and Combinations~Arrangements;Selections;Factorials
+A14~Probability~Basic probability;Independent events
+A15~Mensuration~Area;Perimeter;Volume;Surface area
+A16~Data Interpretation~Tables;Bar graphs;Pie charts;Line graphs
+A17~Number Series~Missing numbers;Pattern recognition
+A18~Alphabet Series~Letter positions;Alphabet patterns
+A19~Coding and Decoding~Letter coding;Number coding;Symbol coding
+A20~Analogy and Classification~Word analogy;Number analogy;Classification
+A21~Blood Relations~Family relationships;Family tree problems
+A22~Direction Sense~Direction identification;Distance and orientation
+A23~Ranking and Ordering~Position;Order;Comparison
+A24~Syllogisms~Statements;Conclusions;Venn diagrams
+A25~Seating Arrangements~Linear arrangements;Circular arrangements
+A26~Puzzles~Scheduling;Grouping;Ordering
+A27~Statement-Based Reasoning~Assumptions;Conclusions;Arguments;Inferences
+A28~Clocks and Calendars~Clock angles;Time calculations;Calendar problems;Day and date calculations
+A29~English Grammar~Tenses;Articles;Prepositions;Subject-verb agreement
+A30~Vocabulary~Synonyms;Antonyms;Word usage
+A31~Sentence Correction~Error spotting;Sentence improvement
+A32~Reading Comprehension~Passage understanding;Inference;Conclusions`;
+const G=RAW.split('\n').map(l=>{const [a,b,c]=l.split('~'),n=+a.slice(1),sec=a[0];
+ return{id:a,name:b,sec,cat:sec=='T'?'Technical subjects':n<=16?'Quantitative Aptitude':n<=28?'Logical and Analytical Reasoning':'Verbal Aptitude (supplementary)',
+ subs:c.split(';').map((x,i)=>({id:a+'.'+String(i+1).padStart(2,'0'),name:x,g:a,sec}))}});
+const T=[],TM={},GM={};G.forEach(g=>{GM[g.id]=g;g.subs.forEach(s=>{T.push(s);TM[s.id]=s})});
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+/* dates (local, ISO strings) */
+const pd=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const fd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const add=(s,n)=>{const d=pd(s);d.setDate(d.getDate()+n);return fd(d)};
+const today=()=>fd(new Date());
+const diff=(a,b)=>Math.round((pd(b)-pd(a))/864e5);
+const cl=s=>s>FINAL?FINAL:s;
+const nice=s=>pd(s).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+/* state */
+function load(){try{const j=JSON.parse(localStorage.getItem(KEY));if(j&&j.t&&j.h)return j}catch(e){}return{t:{},h:{}}}
+let S=load(),V={view:'dash',scope:'*',f:'all',subj:'',q:'',rt:'today',det:{},open:{}},P=null;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('Browser storage is unavailable. Export a JSON backup.')}}
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display='none',3200)}
+const rec=id=>S.t[id]||(S.t[id]={s:0,n:'',df:0,sc:[],ix:0,m:0});
+const hist=(d,k,n)=>{const h=S.h[d]||(S.h[d]={c:0,r:0});h[k]=Math.max(0,h[k]+n)};
+/* revision engine */
+function mkSch(done){if(done>FINAL)return[];const a=[];OFFS.forEach((o,i)=>{const d=add(done,o);if(d<FINAL)a.push({d,l:'R'+(i+1)})});a.push({d:FINAL,l:'Final'});return a}
+function cover(r){r.sch=mkSch(r.dc);r.ix=0;r.sc=[];r.m=0;r.due=r.sch.length?r.sch[0].d:null}
+function setStatus(id,s){const r=rec(id);if(r.s==s)return;
+ if(r.s==2){if(!confirm('Moving this topic out of Covered removes its revision schedule and scores. Continue?'))return;
+  if(S.h[r.dc])hist(r.dc,'c',-1);r.sch=null;r.due=null;r.dc=null;r.ix=0;r.m=0;r.sc=[]}
+ if(s==2){r.dc=today();cover(r);hist(r.dc,'c',1)}
+ r.s=s;save();render()}
+const rk=r=>(r.m||!r.due)?'done':r.due<today()?'over':r.due==today()?'today':'up';
+const wk=r=>!r.m&&r.sc.filter(x=>x.v<80).length>=2&&r.sc[r.sc.length-1].v<80;
+const okc=r=>r.sc.filter(x=>x.v>=80).length;
+function revise(id,v){const r=rec(id),t=today();r.sc.push({d:t,v,l:r.sch[r.ix]?r.sch[r.ix].l:''});hist(t,'r',1);
+ if(v>=80){r.ix++;if(r.ix>=r.sch.length)r.due=null;else{const n=r.sch[r.ix].d,tm=add(t,1);r.due=cl(n>tm?n:tm)}}
+ else r.due=cl(add(t,v>=60?2:1));save()}
+/* stats */
+const secT=sec=>sec=='*'?T:T.filter(s=>s.sec==sec);
+function stats(sec){const L=secT(sec);let ns=0,ip=0,cv=0;L.forEach(s=>{const x=(S.t[s.id]||{}).s||0;x==0?ns++:x==1?ip++:cv++});return{n:L.length,ns,ip,cv,p:L.length?Math.round(cv/L.length*100):0}}
+function rvs(sec){const o={today:[],over:[],up:[],done:[]};secT(sec).forEach(s=>{const r=S.t[s.id];if(r&&r.s==2)o[rk(r)].push(s)});
+ ['today','over','up'].forEach(k=>o[k].sort((a,b)=>S.t[a.id].due>S.t[b.id].due?1:-1));return o}
+function perf(sec){let a=0,ok=0;secT(sec).forEach(s=>{const r=S.t[s.id];if(r)r.sc.forEach(x=>{a++;if(x.v>=80)ok++})});return{a,ok,rate:a?Math.round(ok/a*100):null}}
+/* helpers for UI */
+const ring=p=>`<svg class="ring" viewBox="0 0 42 42" role="img" aria-label="${p}%"><circle class="rb" cx="21" cy="21" r="17"/><circle class="rf" cx="21" cy="21" r="17" stroke-dasharray="${(p*1.0681).toFixed(1)} 106.81" transform="rotate(-90 21 21)"/><text x="21" y="23.6" text-anchor="middle">${p}%</text></svg>`;
+const bar=p=>`<div class="bar"><i style="width:${p}%"></i></div>`;
+const cv=(l,v,s)=>`<div class="cardv"><b>${v}</b><span>${l}${s?'<br>'+s:''}</span></div>`;
+const scopeSeg=()=>`<div class="seg" role="group" aria-label="Scope">${[['*','All'],['T','Technical'],['A','Aptitude']].map(([k,l])=>`<button data-a="sc" data-v="${k}" class="${V.scope==k?'on':''}">${l}</button>`).join('')}</div>`;
+function task(s,k){const r=S.t[s.id],g=GM[s.g],last=r.sc.length?r.sc[r.sc.length-1].v:'none',stage=r.sch&&r.sch[r.ix]?r.sch[r.ix].l:'Complete';
+ return`<div class="tk ${k}"><div class="tkh"><b>${esc(s.name)}</b><span class="id">${s.id}</span><span class="mu sm">${esc(g.name)}</span><span class="tag g">${g.sec=='T'?'Technical':'Aptitude'}</span>${r.m?'<span class="tag">Mastered</span>':''}${wk(r)?'<span class="tag r">Weak</span>':''}</div>
+ <div class="kv"><span>Stage <b>${stage}</b></span><span>Completed <b>${nice(r.dc)}</b></span><span>Due <b>${r.due?nice(r.due):'none'}</b></span><span>Past revisions <b>${r.sc.length}</b></span><span>Last score <b>${last}</b></span></div>
+ <div class="bt">${k!='done'?`<button class="pri" data-a="rv" data-id="${s.id}" data-m="start">Start revision</button><button data-a="rv" data-id="${s.id}" data-m="mark">Mark revised</button><button data-a="rs" data-id="${s.id}">Reschedule</button>`:''}${!r.m&&okc(r)>=2?`<button data-a="ms" data-id="${s.id}">Mark mastered</button>`:''}</div></div>`}
+/* modals */
+function openMod(h){const m=$('#mod');m.innerHTML='<div class="box" role="dialog" aria-modal="true">'+h+'</div>';m.hidden=false}
+function closeMod(){$('#mod').hidden=true;P=null}
+function revMod(id,start){const s=TM[id],r=S.t[id],stage=r.sch[r.ix]?r.sch[r.ix].l:'';
+ openMod(`<h3>${esc(s.name)}</h3><p class="mu sm">Stage ${stage}, due ${r.due?nice(r.due):'none'}</p>${start?`<div class="nt">${r.n?esc(r.n):'No notes saved for this topic.'}</div><p class="mu sm">Revise the topic, then record how much you recalled.</p>`:''}<label>Recall score (0 to 100)<input id="scv" type="number" min="0" max="100" step="1" value="80"></label><p id="oc" class="mu sm"></p><div class="bt"><button class="pri" data-a="sv" data-id="${id}">Save result</button><button data-a="cl">Cancel</button></div>`);hint()}
+function hint(){const e=$('#scv'),o=$('#oc');if(!e)return;const v=parseInt(e.value);o.textContent=isNaN(v)||v<0||v>100?'Enter a whole number from 0 to 100.':v>=80?'Successful. The topic moves to its next scheduled review.':v>=60?'Partial recall. Review again in 2 days; the stage does not advance.':'Low recall. Review again tomorrow; the stage does not advance.'}
+function rsMod(id){const r=S.t[id],mn=today()>FINAL?FINAL:today();openMod(`<h3>Reschedule</h3><p class="mu sm">${esc(TM[id].name)}. Revisions cannot be set after 12 Dec 2026.</p><label>New due date<input id="rdv" type="date" min="${mn}" max="${FINAL}" value="${r.due||mn}"></label><div class="bt"><button class="pri" data-a="rs2" data-id="${id}">Save date</button><button data-a="cl">Cancel</button></div>`)}
+/* views */
+function rDash(){const sc=V.scope,A=stats('*'),Tt=stats('T'),Ap=stats('A'),st=stats(sc),R=rvs(sc),pf=perf(sc),dl=diff(today(),EXAM);
+ const pend=R.today.length+R.over.length+R.up.length,succ=pf.ok;
+ let h=`<div class="hd"><h1>Dashboard</h1><p>Preparation window 15 Nov to 12 Dec 2026. Final revision day is 12 Dec; exam is 13 Dec at 8:00 AM, 100 questions, 90 minutes, +1 / -0.25.</p></div>
+ <div class="grid grid3"><div class="cardv rc">${ring(A.p)}<div><strong>Overall</strong>${A.cv} of ${A.n} topics covered</div></div><div class="cardv rc">${ring(Tt.p)}<div><strong>Technical</strong>${Tt.cv} of ${Tt.n} covered</div></div><div class="cardv rc">${ring(Ap.p)}<div><strong>General aptitude</strong>${Ap.cv} of ${Ap.n} covered</div></div></div>
+ <div class="bar2">${scopeSeg()}<span class="mu sm">Cards, lists and charts below follow this filter.</span></div>
+ <div class="grid">${cv('Total topics',st.n)}${cv('Not started',st.ns)}${cv('In progress',st.ip)}${cv('Covered',st.cv)}${cv('Revisions pending',pend)}${cv('Revisions overdue',R.over.length)}${cv('Revisions completed',succ,'successful reviews')}${cv('Success rate',pf.rate==null?'none':pf.rate+'%',pf.a+' attempts')}${cv('Days remaining',dl>0?dl:dl==0?'Today':'Passed','to exam')}</div>
+ <div class="pn"><h3>Daily progress</h3><div class="chart">${chart()}</div><div class="lg"><span><s></s>Topics covered</span><span><s></s>Revisions done</span><span>15 Nov to 12 Dec</span></div></div>
+ <div class="grid grid3" style="align-items:start"><div class="pn"><h3>Due today (${R.today.length})</h3>${R.over.length?`<p class="sm" style="color:var(--rd)">${R.over.length} overdue</p>`:''}${R.today.concat(R.over).slice(0,4).map(s=>`<div class="sm" style="padding:3px 0">${esc(s.name)} <span class="mu">${s.id}</span></div>`).join('')||'<span class="mu sm">Nothing due today.</span>'}<div class="bt" style="margin-top:10px"><button class="pri" data-a="nav" data-v="rev">Open Revision Center</button></div></div>
+ <div class="pn"><h3>Upcoming</h3>${R.up.slice(0,5).map(s=>`<div class="sm" style="padding:3px 0">${nice(S.t[s.id].due)} &nbsp;${esc(s.name)}</div>`).join('')||'<span class="mu sm">No upcoming revisions yet. Mark topics Covered to schedule them.</span>'}</div>
+ <div class="pn"><h3>Weak topics</h3>${weakT(sc)}</div></div>
+ <div class="pn"><h3>Weakest subject groups</h3>${weakG(sc)}</div>
+ <div class="pn"><h3>Completion by subject</h3>${G.filter(g=>sc=='*'||g.sec==sc).map(g=>{const c=g.subs.filter(s=>(S.t[s.id]||{}).s==2).length,p=Math.round(c/g.subs.length*100);return`<div class="sr"><span>${g.id}</span><span class="n">${esc(g.name)}</span>${bar(p)}<span>${c}/${g.subs.length}</span></div>`}).join('')}</div>`;
+ return h}
+function chart(){let days=[],d=START,mx=1;while(d<=FINAL){days.push(d);d=add(d,1)}
+ days.forEach(x=>{const h=S.h[x];if(h)mx=Math.max(mx,h.c,h.r)});
+ return days.map(x=>{const h=S.h[x]||{c:0,r:0};return`<div class="col ${x==today()?'td':''}" title="${nice(x)}: ${h.c} covered, ${h.r} revised"><i style="height:${h.c/mx*100}%"></i><i style="height:${h.r/mx*100}%"></i></div>`}).join('')}
+function weakT(sc){const L=secT(sc).filter(s=>S.t[s.id]&&wk(S.t[s.id]));return L.length?L.slice(0,6).map(s=>{const r=S.t[s.id];return`<div class="sm" style="padding:3px 0">${esc(s.name)} <span class="tag r">${r.sc.slice(-3).map(x=>x.v).join(', ')}</span></div>`}).join(''):'<span class="mu sm">None flagged. A topic is flagged after two scores below 80.</span>'}
+function weakG(sc){const a=G.filter(g=>sc=='*'||g.sec==sc).map(g=>{const v=[];g.subs.forEach(s=>{const r=S.t[s.id];if(r)r.sc.forEach(x=>v.push(x.v))});return{g,n:v.length,avg:v.length?Math.round(v.reduce((p,c)=>p+c,0)/v.length):null}}).filter(x=>x.n).sort((a,b)=>a.avg-b.avg).slice(0,6);
+ return a.length?a.map(x=>`<div class="sr"><span>${x.g.id}</span><span class="n">${esc(x.g.name)}</span>${bar(x.avg)}<span>${x.avg}% avg</span></div>`).join(''):'<span class="mu sm">Complete revisions to see average recall per subject.</span>'}
+function match(s){const r=S.t[s.id]||{s:0,sc:[]},q=V.q.toLowerCase();
+ if(q&&!(s.name.toLowerCase().includes(q)||s.id.toLowerCase().includes(q)||GM[s.g].name.toLowerCase().includes(q)))return false;
+ if(V.subj&&V.subj!=s.g)return false;
+ switch(V.f){case'ns':return r.s==0;case'ip':return r.s==1;case'cv':return r.s==2;case'due':return r.s==2&&['today','over'].includes(rk(r));case'over':return r.s==2&&rk(r)=='over';case'mast':return!!r.m}return true}
+function row(s){const r=S.t[s.id]||{s:0,sc:[],df:0},st=r.s||0,bd=[];
+ if(st==2){if(r.m)bd.push('<span class="tag">Mastered</span>');else if(r.due){const k=rk(r);bd.push(`<span class="tag ${k=='over'?'r':''}">${k=='over'?'Overdue ':'Next '}${r.sch[r.ix]?r.sch[r.ix].l:''} ${nice(r.due)}</span>`)}else bd.push('<span class="tag g">Revisions done</span>');if(wk(r))bd.push('<span class="tag r">Weak</span>')}
+ return`<div class="tp s${st}"><div class="tm"><span class="id">${s.id}</span><span class="nm">${esc(s.name)}</span>${bd.join('')}</div>
+ <div class="seg" role="group" aria-label="Status of ${esc(s.name)}">${['Not started','In progress','Covered'].map((l,i)=>`<button data-a="st" data-id="${s.id}" data-v="${i}" class="${st==i?'on':''}">${l}</button>`).join('')}</div>
+ <button data-a="det" data-id="${s.id}" aria-expanded="${!!V.det[s.id]}">${V.det[s.id]?'Hide':'Details'}</button>${V.det[s.id]?detail(s,r):''}</div>`}
+function detail(s,r){const cov=r.s==2;
+ return`<div class="dt"><div>${cov?`<label>Completion date<input type="date" data-a="dc" data-id="${s.id}" value="${r.dc}" max="${today()}"></label><label>Revision schedule</label><div class="sch">${(r.sch||[]).map((x,i)=>`<span class="tag ${i<r.ix?'':'g'}">${x.l} ${nice(x.d)}${i<r.ix?' done':''}</span>`).join('')||'<span class="mu sm">No revision window left before 12 Dec.</span>'}</div>${r.sc.length?`<label>Scores</label><span class="sm">${r.sc.map(x=>x.v).join(', ')}</span>`:''}`:'<span class="mu sm">Mark the topic Covered to start its revision schedule.</span>'}</div>
+ <div><label>Difficulty</label><div class="st">${[1,2,3,4,5].map(n=>`<button data-a="df" data-id="${s.id}" data-v="${n}" class="${r.df>=n?'on':''}" aria-label="Difficulty ${n}">${n}</button>`).join('')}</div><label>Notes</label><textarea data-a="nt" data-id="${s.id}" placeholder="Formulas, traps, things to recheck">${esc(r.n||'')}</textarea></div></div>`}
+function rList(sec){const gs=sec=='*'?G:G.filter(g=>g.sec==sec),filt=V.q||V.f!='all'||V.subj,st=stats(sec);
+ const title=sec=='T'?'Technical Preparation':sec=='A'?'General Aptitude':'Search results';
+ let h=`<div class="hd"><h1>${title}</h1><p>${sec=='*'?`Matches for "${esc(V.q)}" across both sections.`:`${gs.length} subject groups, ${st.n} subtopics, ${st.p}% covered. This checklist is based on typical undergraduate CSE subjects and aptitude coverage. It is not an official BEL syllabus.`}</p></div>
+ <div class="bar2"><select data-a="ff" aria-label="Filter by status">${[['all','All statuses'],['ns','Not started'],['ip','In progress'],['cv','Covered'],['due','Due for revision'],['over','Overdue'],['mast','Mastered']].map(([k,l])=>`<option value="${k}"${V.f==k?' selected':''}>${l}</option>`).join('')}</select>
+ <select data-a="fs" aria-label="Filter by subject"><option value="">All subjects</option>${gs.map(g=>`<option value="${g.id}"${V.subj==g.id?' selected':''}>${g.id} ${esc(g.name)}</option>`).join('')}</select></div>`;
+ let n=0,cat='';
+ gs.forEach(g=>{const subs=g.subs.filter(match);if(!subs.length)return;n++;
+  if(g.cat!=cat){cat=g.cat;if(sec!='T'||0)h+=`<div class="cat">${cat}</div>`}
+  const c=g.subs.filter(s=>(S.t[s.id]||{}).s==2).length,ip=g.subs.filter(s=>(S.t[s.id]||{}).s==1).length,p=Math.round(c/g.subs.length*100),op=filt||V.open[g.id];
+  h+=`<div class="gc"><button class="gh" data-a="grp" data-id="${g.id}" aria-expanded="${!!op}"><div class="gt"><b>${esc(g.name)}</b><span class="id">${g.id}</span><span class="chip">${g.subs.length} subtopics</span><span class="chip">${c} covered</span><span class="chip">${ip} in progress</span><span class="chip">${g.subs.length-c-ip} not started</span><span class="id" style="margin-left:auto">${p}%</span></div>${bar(p)}</button>${op?`<div class="gb">${subs.map(row).join('')}</div>`:''}</div>`});
+ if(!n)h+='<div class="empty">No topics match. Clear the search or change the filters.</div>';return h}
+function rRev(){const sc=V.scope,R=rvs(sc),tabs=[['today','Due today'],['over','Overdue'],['up','Upcoming'],['done','Completed']];
+ const L=R[V.rt];
+ return`<div class="hd"><h1>Revision Center</h1><p>Reviews run at 1, 3, 7, 14 and 21 days after coverage, plus a final pass on 12 Dec 2026. Scores of 80 or more advance the stage; 60 to 79 repeats in 2 days; below 60 repeats tomorrow.</p></div>
+ <div class="bar2">${scopeSeg()}</div><div class="tabs">${tabs.map(([k,l])=>`<button data-a="rt" data-v="${k}" class="${V.rt==k?'on':''}">${l} (${R[k].length})</button>`).join('')}</div>
+ ${L.length?L.map(s=>task(s,V.rt)).join(''):`<div class="empty">${V.rt=='done'?'No finished revision cycles yet.':'No revisions in this list. Mark topics Covered to add them here.'}</div>`}`}
+function rBk(){const n=Object.keys(S.t).length;
+ return`<div class="hd"><h1>Backup</h1><p>Progress is saved in this browser. Export a JSON file regularly as your real backup; browser storage can be cleared.</p></div>
+ <div class="pn"><h3>Export</h3><p class="mu sm">Downloads all statuses, dates, scores, notes and history (${n} topic records).</p><button class="pri" data-a="ex">Export progress as JSON</button></div>
+ <div class="pn"><h3>Import</h3><p class="mu sm">The file is validated before it replaces your current progress.</p><button data-a="im">Import progress from JSON</button></div>
+ <div class="pn"><h3>Reset</h3><p class="mu sm">Deletes every status, note, score and revision. This cannot be undone.</p><button class="dg" data-a="rz">Reset all progress</button></div>`}
+const IC={dash:'<path d="M3 3h8v8H3zM13 3h8v5h-8zM13 11h8v10h-8zM3 14h8v7H3z"/>',T:'<path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13 6l-2 12"/>',A:'<path d="M5 20V10M12 20V4M19 20v-7"/>',rev:'<path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5M12 8v4l3 2"/>',bk:'<path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>'};
+const NAV=[['dash','Dashboard'],['T','Technical'],['A','Aptitude'],['rev','Revision'],['bk','Backup']];
+function render(){const nv=NAV.map(([k,l])=>`<button class="nv ${V.view==k?'on':''}" data-a="nav" data-v="${k}"><svg viewBox="0 0 24 24" aria-hidden="true">${IC[k]}</svg>${l}</button>`).join('');
+ $('#side').innerHTML='<div class="brand">BEL Kotdwar<small>Trainee Engineer-I, Computer Science</small></div>'+nv;$('#bnav').innerHTML=nv;
+ const dl=diff(today(),EXAM);$('#cd').innerHTML=`<b>${dl>0?dl+' days':dl==0?'Exam day':'Exam over'}</b>13 Dec 2026`;
+ $('#main').innerHTML=V.view=='dash'?rDash():V.view=='T'||V.view=='A'?rList(V.view):V.view=='search'?rList('*'):V.view=='rev'?rRev():rBk()}
+/* backup */
+function exportJ(){const b=new Blob([JSON.stringify({app:'bel-kotdwar-tracker',version:1,exported:new Date().toISOString(),t:S.t,h:S.h},null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='bel-tracker-'+today()+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),500);toast('Progress exported.')}
+function vImp(j){const isD=x=>typeof x=='string'&&/^\d{4}-\d{2}-\d{2}$/.test(x)&&fd(pd(x))==x;
+ if(!j||typeof j!='object'||!j.t||typeof j.t!='object'||!j.h||typeof j.h!='object')return{err:'This file is not a tracker export.'};
+ const o={t:{},h:{}};
+ for(const id in j.t){const r=j.t[id];if(!TM[id])return{err:'Unknown topic ID: '+id};if(!r||typeof r!='object')return{err:'Invalid record for '+id};
+  if(![0,1,2].includes(r.s))return{err:'Invalid status for '+id};
+  if(r.n!==undefined&&typeof r.n!='string')return{err:'Invalid notes for '+id};
+  if(r.df!==undefined&&!(Number.isInteger(r.df)&&r.df>=0&&r.df<=5))return{err:'Invalid difficulty for '+id};
+  if(r.ix!==undefined&&!(Number.isInteger(r.ix)&&r.ix>=0&&r.ix<=10))return{err:'Invalid stage for '+id};
+  if(r.s==2&&!isD(r.dc))return{err:'Invalid completion date for '+id};
+  if(r.due!=null&&!isD(r.due))return{err:'Invalid due date for '+id};
+  const sc=r.sc===undefined?[]:r.sc;if(!Array.isArray(sc))return{err:'Invalid scores for '+id};
+  for(const x of sc)if(!x||!isD(x.d)||typeof x.v!='number'||x.v<0||x.v>100)return{err:'Invalid score entry for '+id};
+  const n={s:r.s,n:(r.n||'').slice(0,5000),df:r.df||0,sc:sc.map(x=>({d:x.d,v:x.v,l:String(x.l||'').slice(0,12)})),ix:r.ix||0,m:r.m?1:0};
+  if(r.s==2){n.dc=r.dc;n.sch=mkSch(r.dc);n.ix=Math.min(n.ix,n.sch.length);n.due=n.ix<n.sch.length?(r.due?cl(r.due):n.sch[n.ix].d):null}
+  o.t[id]=n}
+ for(const d in j.h){const x=j.h[d];if(!isD(d)||!x||!Number.isInteger(x.c)||!Number.isInteger(x.r)||x.c<0||x.r<0)return{err:'Invalid history entry: '+d};o.h[d]={c:x.c,r:x.r}}
+ return{ok:o}}
+/* events */
+document.addEventListener('click',e=>{if(e.target.id=='mod'){closeMod();return}
+ const b=e.target.closest('[data-a]');if(!b||['SELECT','INPUT','TEXTAREA'].includes(b.tagName))return;const a=b.dataset.a,id=b.dataset.id,v=b.dataset.v;
+ switch(a){
+ case'nav':V.view=v;V.f='all';V.subj='';V.q='';$('#q').value='';render();scrollTo(0,0);break;
+ case'sc':V.scope=v;render();break;case'rt':V.rt=v;render();break;
+ case'st':setStatus(id,+v);break;
+ case'det':V.det[id]=!V.det[id];render();break;
+ case'grp':V.open[id]=!V.open[id];render();break;
+ case'df':{const r=rec(id);r.df=r.df==+v?0:+v;save();render();break}
+ case'rv':revMod(id,b.dataset.m=='start');break;
+ case'rs':rsMod(id);break;
+ case'sv':{const n=parseFloat($('#scv').value);if(!Number.isInteger(n)||n<0||n>100){hint();return}revise(id,n);closeMod();render();toast(n>=80?'Revision saved. Stage advanced.':'Revision saved. Review rescheduled.');break}
+ case'rs2':{const d=$('#rdv').value,mn=today()>FINAL?FINAL:today();if(!d||d<mn||d>FINAL){toast('Pick a date from today to 12 Dec 2026.');return}rec(id).due=d;save();closeMod();render();toast('Rescheduled to '+nice(d)+'.');break}
+ case'ms':rec(id).m=1;save();render();toast('Marked as mastered.');break;
+ case'cl':closeMod();break;
+ case'ex':exportJ();break;case'im':$('#file').click();break;
+ case'rz':openMod('<h3>Reset all progress?</h3><p class="mu">Every status, note, score, revision and history entry will be deleted. Export a backup first if you might need it.</p><div class="bt"><button class="dg" data-a="rz2">Delete everything</button><button data-a="cl">Cancel</button></div>');break;
+ case'rz2':S={t:{},h:{}};save();closeMod();render();toast('All progress reset.');break;
+ case'imp':if(P){S=P;P=null;save();closeMod();render();toast('Progress imported.')}break}});
+document.addEventListener('change',e=>{const t=e.target,a=t.dataset.a;
+ if(a=='ff'){V.f=t.value;render()}else if(a=='fs'){V.subj=t.value;render()}
+ else if(a=='dc'){const r=rec(t.dataset.id);if(!t.value||t.value>today()){toast('Pick a date up to today.');render();return}
+  if(S.h[r.dc])hist(r.dc,'c',-1);r.dc=t.value;hist(r.dc,'c',1);r.sch=mkSch(r.dc);r.ix=Math.min(r.ix,r.sch.length);r.due=r.ix<r.sch.length?r.sch[r.ix].d:null;save();render()}
+ else if(t.id=='file'&&t.files[0]){const fr=new FileReader();fr.onload=()=>{let j;try{j=JSON.parse(fr.result)}catch(x){toast('That file is not valid JSON.');return}
+  const res=vImp(j);if(res.err){toast('Import failed: '+res.err);return}P=res.ok;
+  openMod(`<h3>Replace current progress?</h3><p class="mu">The file holds ${Object.keys(P.t).length} topic records. Your current progress will be replaced.</p><div class="bt"><button class="pri" data-a="imp">Replace progress</button><button data-a="cl">Cancel</button></div>`)};
+  fr.readAsText(t.files[0]);t.value=''}});
+document.addEventListener('input',e=>{const t=e.target;
+ if(t.id=='q'){V.q=t.value.trim();if(V.q&&V.view!='search'){V.view='search';V.f='all';V.subj=''}else if(!V.q&&V.view=='search')V.view='dash';render()}
+ else if(t.dataset.a=='nt'){rec(t.dataset.id).n=t.value;save()}
+ else if(t.id=='scv')hint()});
+document.addEventListener('keydown',e=>{if(e.key=='Escape')closeMod()});
+render();
+</script>
+</body>
+</html>
